@@ -1,26 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="vue-interactive-garden">
+    <interactive-garden></interactive-garden>
+  </div>
+ 
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import InteractiveGarden from './components/garden/InteractiveGarden.vue'
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    InteractiveGarden,
   }
 }
 </script>
 
 <style>
+
+body {
+  margin: 0;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.vue-interactive-garden {
+  display: flex;
 }
 </style>
