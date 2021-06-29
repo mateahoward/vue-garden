@@ -1,5 +1,8 @@
 # vue-garden
 
+### Project uses:
+- Pinia
+
 ## Project setup
 ```
 npm install

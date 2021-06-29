@@ -11,8 +11,35 @@
 </template>
 
 <script>
+import { useCounterStore } from '@/stores/counter'
+import { mapState } from 'pinia'
+
+
 export default {
-   name: 'GardenSeed'
+   name: 'GardenSeed',
+
+   created() {
+
+},
+
+    computed: {
+        // gives access to this.counter inside the component
+        // same as reading from store.counter
+        ...mapState(useCounterStore, ['counter']),
+
+        // same as above but registers it as this.myOwnName
+        ...mapState(useCounterStore, {
+            myOwnName: 'counter',
+
+            // you can also write a function that gets access to the store
+            double: store => store.counter * 2,
+
+            // it can have access to `this` but it won't be typed correctly...
+            magicValue(store) {
+                return store.someGetter + this.counter + this.double
+            },
+        }),
+  }
 }
 </script>
 
