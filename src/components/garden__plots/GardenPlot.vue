@@ -150,7 +150,6 @@ export default {
         font-size: 45px;
 
         background: white;
-        opacity: 90%;
     }
 
 </style>
