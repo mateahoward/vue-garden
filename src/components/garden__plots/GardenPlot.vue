@@ -125,8 +125,8 @@ export default {
         border-top: 2px dashed black;
         background: brown;
 
-        position: absolute;
-        top: 105px;
+        position: relative;
+        top: 135px;
     }
 
     .drop-zone-wrapper {
