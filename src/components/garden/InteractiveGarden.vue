@@ -1,26 +1,27 @@
 <template>
-    <div class="sidebar-wrapper">
-        <sidebar
-            @shouldShowGardenVegRoom  = 'toggleVegRoom'
-            @shouldShowTreeOrchard    = 'toggleTreeOrchard'
-            @shouldShowAnimalFarm     = 'toggleAnimalFarm'
-        ></sidebar>
-    </div>
-    <div class="garden"> 
-        <loading            v-if="shouldShowLoading">               </loading>
-        <garden-veg-room    v-if="shouldShowGardenVegRoom">         </garden-veg-room>
-        <garden-animal-pen  v-if="shouldShowAnimalFarm">            </garden-animal-pen>
-        <garden-orchid      v-if="shouldShowTreeOrchard">           </garden-orchid>
-    </div>
+   <div class="interactive-garden">
+        <div class="sidebar-wrapper">
+            <sidebar
+                @shouldShowGardenVegRoom  = 'toggleVegRoom'
+                @shouldShowTreeOrchard    = 'toggleTreeOrchard'
+                @shouldShowAnimalFarm     = 'toggleAnimalFarm'
+            ></sidebar>
+        </div>
+        <div class="garden-rooms"> 
+            <loading            v-if="shouldShowLoading">               </loading>
+            <garden-veg-room    v-if="shouldShowGardenVegRoom">         </garden-veg-room>
+            <garden-animal-pen  v-if="shouldShowAnimalFarm">            </garden-animal-pen>
+            <garden-orchard     v-if="shouldShowTreeOrchard">           </garden-orchard>
+        </div>
+   </div>
     
 </template>
 
 <script>
 import Loading from './Loading.vue'
 import Sidebar from './Sidebar.vue'
-
 import GardenAnimalPen  from '../garden_rooms/GardenAnimalPen.vue'
-import GardenOrchid     from '../garden_rooms/GardenOrchid.vue'
+import GardenOrchard     from '../garden_rooms/GardenOrchard.vue'
 import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
 
     export default {
@@ -30,7 +31,7 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
             Sidebar,
             GardenAnimalPen,
             GardenVegRoom,
-            GardenOrchid,
+            GardenOrchard,
         },
         data() {
             return {
@@ -42,6 +43,7 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
         },
         methods: {
 
+            // SHOWS VEG ROOM
             toggleVegRoom() {
                 this.shouldShowLoading      = false;
                 this.shouldShowTreeOrchard  = false;
@@ -50,6 +52,7 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
                 this.shouldShowGardenVegRoom = !this.shouldShowGardenVegRoom;
             },
 
+             // SHOWS TREE ORCHARD
             toggleTreeOrchard() {
                 this.shouldShowLoading       = false;
                 this.shouldShowGardenVegRoom = false;
@@ -58,6 +61,7 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
                 this.shouldShowTreeOrchard = !this.shouldShowTreeOrchard;
             },
 
+            // SHOWS ANIMAL FARM
             toggleAnimalFarm(){
                 this.shouldShowLoading       = false;
                 this.shouldShowGardenVegRoom = false;
@@ -73,14 +77,32 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
 
 <style scoped>
 
-    .garden {
-        height: 100vh;
-        width: 90%;
-        overflow-y: scroll;
+    .interactive-garden {
+        display: flex;
+        width: 100%;
     }
 
-    .sidebar-wrapper {
-        width: 300px; 
+    .garden-rooms {
+        height: 100vh;
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+     .sidebar-wrapper {
+        width: 300px;
+     }
+
+    @media (max-width: 980px) {
+        .sidebar-wrapper {
+            display: none;
+        }
+
+        .garden-rooms {
+            width: 100%;
+        }
     }
 
 </style>

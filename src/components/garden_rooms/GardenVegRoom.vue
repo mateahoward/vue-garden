@@ -3,7 +3,7 @@
 
         <!-- garden instructions --> 
         <section class="garden-vegetables-instruction" v-if="shouldShowInstructions">
-            <p> Drag your seeds towards squares please</p>
+            <p> Plant your seeds by dragging them towards planters below</p>
             <button @click="toggleInstructions">Okey dokey</button>
         </section>
 
@@ -16,50 +16,52 @@
             </div>
         </div>
 
-        <!-- garden seeds --> 
-        <section class='garden-seeds'>
-            <garden-seed 
-                v-for='(item,name) in upackagedSeeds' 
-                :key='name'
-                :seed="item"  
-                @draggable='true'
-                @dragstart='startDrag($event, item)'
-            >
-            </garden-seed>
-        </section>
+        <div class="garden-vegetables__content">
+            <!-- garden seeds --> 
+            <section class='garden-seeds'>
+                <garden-seed 
+                    v-for='(item,name) in upackagedSeeds' 
+                    :key='name'
+                    :seed="item"  
+                    @draggable='true'
+                    @dragstart='startDrag($event, item)'
+                >
+                </garden-seed>
+            </section>
 
-        <!-- garden plots -->
-        <section class="garden-plots-displayed">
-            <div class="garden-plot-container">
+            <!-- garden plots -->
+            <section class="garden-plots-displayed">
+                <div class="garden-plot-container">
 
-                <!-- SEEDS NOT PLANTED YET--> 
-                <div class="garden-plot__row">
-                    <garden-plot
-                        v-for="(seed,index) in upackagedSeeds"
-                        :key="index"
-                        :upackagedSeeds="upackagedSeeds"
-                        @drop='onDrop($event, 2)' 
-                        @dragover.prevent
-                        @dragenter.prevent 
-                        @touchend='onDrop($event, 2)'            
-                    >
-                    </garden-plot>
+                    <!-- SEEDS NOT PLANTED YET--> 
+                    <div class="garden-plot__row">
+                        <garden-plot
+                            v-for="(seed,index) in upackagedSeeds"
+                            :key="index"
+                            :upackagedSeeds="upackagedSeeds"
+                            @drop='onDrop($event, 2)' 
+                            @dragover.prevent
+                            @dragenter.prevent 
+                            @touchend='onDrop($event, 2)'            
+                        >
+                        </garden-plot>
+                    </div>
                 </div>
-            </div>
 
-            <!-- SEEDS PLANTED --> 
-            <div class="garden-plot-container">
-                <div class="garden-plot__row">
-                    <garden-plot
-                        v-for="(seed,index) in plantedSeeds"
-                        :key="index"
-                        :plantedSeed="seed"            
-                    >
-                    </garden-plot>
+                <!-- SEEDS PLANTED --> 
+                <div class="garden-plot-container">
+                    <div class="garden-plot__row">
+                        <garden-plot
+                            v-for="(seed,index) in plantedSeeds"
+                            :key="index"
+                            :plantedSeed="seed"            
+                        >
+                        </garden-plot>
+                    </div>
                 </div>
-            </div>
 
-        </section>
+            </section>
+        </div>
      </main>
 </template>
 
@@ -80,22 +82,22 @@ export default {
              seeds: [
                     {   
                         id: 0,
-                        name: 'seedName',
+                        name: 'Pumpkin',
                         list: 1
                     },
                     {
                         id: 1,
-                        name: 'seedName',
+                        name: 'Corn',
                         list: 1
                     },
                     {
                         id: 3,
-                        name: 'seedName',
+                        name: 'Carrot',
                         list: 1
                     },
                     {
                         id: 4,
-                        name: 'seedName',
+                        name: 'Onion',
                         list: 1
                     }
                 
@@ -110,8 +112,8 @@ export default {
         },
 
         startDrag: (event, seed) => {
-            // event.dataTransfer.dropEffect = 'move';
-            // event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.dropEffect = 'move';
+            event.dataTransfer.effectAllowed = 'move';
 
             event.dataTransfer.setData('seedID', seed.id);
         },
@@ -136,18 +138,19 @@ export default {
 </script>
 
 <style scoped>
+
     .garden-vegetables--room {
         height: 100vh;
         width: 100%;
             
-        /* background: url('../../assets/images/garden__background.jpg');
-        background-size: cover; */
+        background: url('../../assets/images/veg-room-background.jpg');
+        background-size: cover;
 
-        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+ 
     }
 
     .garden-vegetables-instruction {
@@ -158,7 +161,6 @@ export default {
         background: #bf9f8d;
         border-radius: 4px;
         height: 110px;
-        position: relative;
         width: 60%;
     }
     .garden-vegetables-instruction p {
@@ -196,12 +198,17 @@ export default {
         color: white;
     }
 
+    .garden-vegetables__content {
+        display: flex;
+        flex-direction: column;
+    }
+
      .garden-seeds {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
-        height: 300px;
+        height: 200px;
     }
 
     .garden-plots-displayed {
@@ -209,6 +216,7 @@ export default {
         align-items: flex-end;
         justify-content: center; 
         position: relative;
+        top: 120px;
     }
 
     .garden-plot-container {
@@ -216,7 +224,6 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        position: relative;
     }
 
 

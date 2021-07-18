@@ -6,7 +6,9 @@
         <section class="welcome" v-if="shouldShowWelcome">
             <h1> Welcome 👋</h1>
 
-            <p> To get started please name your new farm </p>
+            <h1> Getting Started:</h1>
+
+            <p> Please set a name for your new farm </p>
 
             <input  v-model="farmName">
             <button @click="toggleStepTwo"> save and continue </button>
@@ -15,11 +17,11 @@
         <!-- WELL DONE -->
         <section class="well-done" v-if="farmHasBeenNamed && shouldShowWellDone">
             <h1> Good Job 👏 </h1>
-            <p> Awesome! Your new farm will be called: </p>
+            <p> Your new farm name has been set to: </p>
             <span> '{{farmName}}'</span>
-            <p> Let's look at our tools and jobs to be done! </p>
+            <p> Are you ready to look at our tools and jobs to be done? </p>
 
-            <button @click="toggleGardenTools"> Use Farm Tools</button>
+            <button @click="toggleGardenTools"> Show me the tools </button>
         </section>
 
         <!-- SHOW GARDEN ROOMS -->
@@ -30,6 +32,14 @@
                 <li @click="toggleAnimalFarm">   Animal Farm    </li>
             </ul>
         </section>
+
+
+        <!--- SIGNATURE -->
+        <footer>
+           <p> Built with 💛 by </p>
+            <a href="https://github.com/mateahoward"> Matea Howard </a>
+            
+        </footer>
   
     </div>
 </template>
@@ -91,21 +101,12 @@
             ///////////////////////////////////////////
             toggleGardenSeeds() {
                 this.$emit('shouldShowGardenVegRoom');
-                // this.showGardenSeeds = true;
-                // this.showTreeOrchard = false; 
-                // this.showAnimalFarm = false;
             },
             toggleTreeOrchard() {
                 this.$emit('shouldShowTreeOrchard');
-                // this.showTreeOrchard =  true;
-                // this.showGardenSeeds = false; 
-                // this.showAnimalFarm = false;
             },
             toggleAnimalFarm() {
                 this.$emit('shouldShowAnimalFarm');
-                // this.showAnimalFarm = true;
-                // this.showTreeOrchard = false; 
-                // this.showGardenSeeds = false;
             },
           
         },
@@ -127,6 +128,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        z-index: 2;
     }
 
     .sidebar img {
@@ -203,13 +205,15 @@
         border: none;
         border-radius: 12px;
 
-        width: 160px;
-        height: 35px;
+        width: 190px;
+        height: 45px;
         
         color: white;
         text-transform: uppercase;
         font-weight: bold;
         font-size: 12px;
+
+        letter-spacing: 0.8px;
     }
 
     .well-done span {
@@ -219,6 +223,29 @@
         text-align: center;
         text-transform:uppercase;
         font-weight: bold;
+    }
+
+    footer {
+        position: absolute;
+        bottom: 30px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    footer p {
+        color: white;
+    }
+    footer a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    footer a:hover, footer a:focus, footer a:visited {
+        color: teal;
     }
 
 </style>

@@ -2,7 +2,6 @@
   <div class="vue-interactive-garden">
     <interactive-garden></interactive-garden>
   </div>
- 
 </template>
 
 <script>

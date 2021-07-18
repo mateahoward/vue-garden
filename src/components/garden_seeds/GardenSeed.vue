@@ -11,15 +11,13 @@
 
 <script>
 
-
-
 export default {
     name: 'GardenSeed',
     props: ['seed'],
 }
 </script>
 
-<style scoped>
+<style>
 
     .garden-seed {
         margin: 20px;
@@ -28,9 +26,10 @@ export default {
         align-items: center;
         justify-content: center;
     }
+
     .seed-outside {
         width: 80px;
-        height:80px;
+        height: 80px;
 
         border-radius: 100%;
         background: #fff8f8;
@@ -44,11 +43,13 @@ export default {
         justify-content: center;
         cursor: pointer;
     }
+
     .seed-outside:focus, 
     .seed-outside:hover {
         border: 2px solid #582806;
         background: #e9e7e7;
     }
+
     .seed {
         width: 20px;
         height: 20px;
@@ -64,6 +65,20 @@ export default {
 
     .seed-name {
         color: black;
+        font-weight: bold;
+        letter-spacing: 0.7px;
         font-size: 12px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 95px;
+        height: 30px;
+        background: white;
+        border-radius: 8px;
+
+
+        opacity: 80%;
+        margin-top: 15px;
     }
 </style>

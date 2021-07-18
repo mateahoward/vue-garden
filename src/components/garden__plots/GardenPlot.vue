@@ -51,6 +51,7 @@ export default {
 </script>
 
 <style scoped>
+
     .garden-plot {
         position: relative;
         display: flex;
@@ -63,6 +64,7 @@ export default {
         justify-content: space-between;
         width: 200px;
     }
+
     .horizontal-planks {
         position: absolute;
         top: 8px;
@@ -72,7 +74,6 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        
     }
 
     .horizontal-planky {
@@ -106,8 +107,8 @@ export default {
 
     .drop-zone-wrapper--planted {
         display: flex;
-
     }
+    
     .drop-zone--planted {
 
         display: flex;
@@ -125,7 +126,7 @@ export default {
         background: brown;
 
         position: absolute;
-        top: -35px;
+        top: 105px;
     }
 
     .drop-zone-wrapper {
@@ -147,6 +148,9 @@ export default {
 
         color: rgb(77, 74, 74);
         font-size: 45px;
+
+        background: white;
+        opacity: 90%;
     }
 
 </style>
