@@ -13,7 +13,7 @@
 
             <!-- in place of animal feeder -->
             <div class="piggy-food-wrapper">
-                <garden-plot></garden-plot>
+                <garden-plot :seed="false"></garden-plot>
             </div>
         </div>
     </div>

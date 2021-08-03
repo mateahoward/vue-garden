@@ -20,7 +20,7 @@
             <!-- garden seeds --> 
             <section class='garden-seeds'>
                 <garden-seed 
-                    v-for='(item,name) in upackagedSeeds' 
+                    v-for='(item,name) in notPlantedSeeds' 
                     :key='name'
                     :seed="item"  
                     @draggable='true'
@@ -29,38 +29,23 @@
                 </garden-seed>
             </section>
 
-            <!-- garden plots -->
+           <!-- GARDEN PLOTS --> 
             <section class="garden-plots-displayed">
                 <div class="garden-plot-container">
-
-                    <!-- SEEDS NOT PLANTED YET--> 
                     <div class="garden-plot__row">
                         <garden-plot
-                            v-for="(seed,index) in upackagedSeeds"
+                            v-for="(seed,index) in seeds"
                             :key="index"
-                            :upackagedSeeds="upackagedSeeds"
+                            :seed='seed'
                             @drop='onDrop($event, 2)' 
                             @dragover.prevent
                             @dragenter.prevent 
                             @touchend='onDrop($event, 2)'            
                         >
-                        </garden-plot>
+                        </garden-plot> 
                     </div>
                 </div>
-
-                <!-- SEEDS PLANTED --> 
-                <div class="garden-plot-container">
-                    <div class="garden-plot__row">
-                        <garden-plot
-                            v-for="(seed,index) in plantedSeeds"
-                            :key="index"
-                            :plantedSeed="seed"            
-                        >
-                        </garden-plot>
-                    </div>
-                </div>
-
-            </section>
+           </section>
         </div>
      </main>
 </template>
@@ -69,9 +54,15 @@
 import GardenPlot from '../garden__plots/GardenPlot.vue'
 import GardenSeed from '../garden_seeds/GardenSeed.vue'
 
+// PINIA
+import { mapStores, mapActions } from 'pinia'
+
+// PINIA - seed growth store
+import { useSeedStore } from '@/stores/seedGrowthStore.js'
 
 export default {
     name:'GardenVegRoom',
+    
     components: {
         GardenPlot,
         GardenSeed
@@ -79,60 +70,64 @@ export default {
     data() {
         return {
             shouldShowInstructions: true,
-             seeds: [
-                    {   
-                        id: 0,
-                        name: 'Pumpkin',
-                        list: 1
-                    },
-                    {
-                        id: 1,
-                        name: 'Corn',
-                        list: 1
-                    },
-                    {
-                        id: 3,
-                        name: 'Carrot',
-                        list: 1
-                    },
-                    {
-                        id: 4,
-                        name: 'Onion',
-                        list: 1
-                    }
-                
-                ]
+            seeds: [], 
         }
+    },
+    mounted() {
+        // get plant seeds from pinia
+        this.seeds = this.seedGrowthStore.seeds;
     },
 
     methods: {
-
+       
         toggleInstructions() {
             this.shouldShowInstructions = !this.shouldShowInstructions;
         },
 
         startDrag: (event, seed) => {
-            event.dataTransfer.dropEffect = 'move';
-            event.dataTransfer.effectAllowed = 'move';
-
             event.dataTransfer.setData('seedID', seed.id);
         },
 
         onDrop (event, list) {
-            event.preventDefault();
             let seedID = event.dataTransfer.getData('seedID');
             let seed = this.seeds.find(seed => seed.id == seedID);
             seed.list = list;
-            event.target.appendChild(document.getElementById(seedID));
+            
+            this.incrementDefaultGrowthLevel(seed);
         },
+
+        incrementDefaultGrowthLevel(seed){
+            this.seedGrowthStore.incrementDefaultGrowthLevel(seed);
+
+            this.prepareForHarvest(seed);
+        },
+
+        prepareForHarvest(seed){
+            if(seed.defaultGrowthLevel === 2) {
+                setTimeout(() => {
+                    this.seedGrowthStore.incrementDefaultGrowthLevel(seed);  
+                }, 10000); 
+            }
+        },
+        isReadyForHarvest(seed) {
+            return (seed.defaultGrowthLevel === 3)
+        },
+
+         // pinia - seed growth store -- methods
+         ...mapActions(useSeedStore, ['increment']),
     },
     computed: {
-        upackagedSeeds() {
+
+        notPlantedSeeds() {
             return this.seeds.filter(seed => seed.list === 1)
         },
+
         plantedSeeds() {
             return this.seeds.filter(seed => seed.list === 2)
-        }
+        },
+
+         // pinia -- seed growth store
+        ...mapStores(useSeedStore),
     }
 }
 </script>
@@ -150,6 +145,8 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+        overflow: hidden;
  
     }
 
@@ -201,6 +198,7 @@ export default {
     .garden-vegetables__content {
         display: flex;
         flex-direction: column;
+        min-height: 500px;
     }
 
      .garden-seeds {
@@ -232,5 +230,11 @@ export default {
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+        .garden-rooms {
+            width: 100vw;
+        }
     }
 </style>

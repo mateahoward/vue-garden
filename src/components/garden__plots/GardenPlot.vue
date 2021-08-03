@@ -1,12 +1,29 @@
 <template>
-
    <div class="garden-plot-wrapper">
-        <div class="drop-zone-wrapper" v-if="!plantedSeed">
+        <div class="drop-zone-wrapper noselect" v-if="notPlanted">
             <div class='drop-zone'>  + </div>
         </div>
 
-        <div class="drop-zone-wrapper" v-else>
-            <div class='drop-zone--planted'></div>
+        <div class="drop-zone-wrapper--planted noselect" v-if="isPlanted">
+            <div class="drop-zone--sparkles">
+               <img src="../../assets/images/growing-plant.gif" alt="brown coloured dirt for planters">
+            </div>
+
+            <div class='drop-zone__plant-dirt'></div>
+        </div>
+
+        <div class="harvest-ready noselect" v-if="isReadyForHarvest">
+            
+
+            <!-- TODO: find out why binding is not working from pinia store -->
+            <!-- <img v-bind:src="seed.img" :alt="seed.name"> -->
+
+            <img v-if="seed.name === 'Radish'"   src="../../assets/images/radish.gif"   :alt="seed.name">
+            <img v-if="seed.name === 'Corn'"     src="../../assets/images/corn.gif"     :alt="seed.name">
+            <img v-if="seed.name === 'Carrot'"   src="../../assets/images/carrot.gif"   :alt="seed.name">
+            <img v-if="seed.name === 'Pumpkin'"  src="../../assets/images/pumpkin.gif"  :alt="seed.name">
+        
+            <div class='drop-zone__plant-dirt'></div>
         </div>
 
         <div class="garden-plot">
@@ -21,11 +38,11 @@
                 <div class="horizontal-planky"></div>
 
                 <!-- SEED NAME --> 
-                <p class="plant-name" v-if="plantedSeed"> 
-                    {{ plantedSeed.name }} 
+                <p class="plant-name noselect" v-if="isPlanted || isReadyForHarvest"> 
+                    {{ seed.name }} 
                 </p>
                 <!-- SEED NAME -- NOT CHOSEN -->
-                <p class="plant-name" v-else> 
+                <p class="plant-name noselect" v-else> 
                     empty
                 </p>
 
@@ -37,21 +54,33 @@
 <script>
 export default {
     name: 'GardenPlot',
-    props: ['plantedSeed', 'upackagedSeeds'],
+    props: ['seed'],
 
-    components: {
-    },
-
-    data() {
-        return {
-           
-        }
+    computed: {
+        notPlanted() {
+            return (this.seed.defaultGrowthLevel === 1)
+        },
+        isPlanted() {
+            return (this.seed.defaultGrowthLevel === 2)
+        },
+        isReadyForHarvest() {
+            return (this.seed.defaultGrowthLevel === 3)
+        },
     }
 }
 </script>
 
 <style scoped>
 
+    .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+    }
+    
     .garden-plot {
         position: relative;
         display: flex;
@@ -107,9 +136,28 @@ export default {
 
     .drop-zone-wrapper--planted {
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: 90px;
+    }
+
+    .drop-zone--sparkles {
+        z-index: 5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: 15px;
+    }
+
+    .drop-zone--sparkles img {
+        width: 80px;
+        height: 80px;
     }
     
-    .drop-zone--planted {
+    .drop-zone__plant-dirt {
 
         display: flex;
         justify-content: center;
@@ -120,13 +168,9 @@ export default {
         height: 100px;
         width: 180px;
 
-        margin: 30px;
         border-radius: 100%;
-        border-top: 2px dashed black;
-        background: brown;
-
-        position: relative;
-        top: 135px;
+        border-top: 5px dashed #42200A;
+        background: #5F3813;
     }
 
     .drop-zone-wrapper {
@@ -152,4 +196,27 @@ export default {
         background: white;
     }
 
+    .harvest-ready  {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .harvest-ready .drop-zone__plant-dirt {
+        position: relative;
+        top: 80px;
+        left: 30px;
+    }
+
+    .harvest-ready img {
+        height: 150px;
+        width: 150px;
+
+        position: relative;
+        top: 130px;
+        left: 40px;
+        z-index: 5;
+
+        cursor: pointer;
+    }
 </style>

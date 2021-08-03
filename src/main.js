@@ -2,5 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from 'pinia'
 
-createApp(App).mount('#app')
-App.use(createPinia())
+
+const pinia = createPinia();
+
+createApp(App).use(pinia).mount('#app')

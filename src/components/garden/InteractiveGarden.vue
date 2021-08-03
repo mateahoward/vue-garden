@@ -21,7 +21,7 @@
 import Loading from './Loading.vue'
 import Sidebar from './Sidebar.vue'
 import GardenAnimalPen  from '../garden_rooms/GardenAnimalPen.vue'
-import GardenOrchard     from '../garden_rooms/GardenOrchard.vue'
+import GardenOrchard    from '../garden_rooms/GardenOrchard.vue'
 import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
 
     export default {
@@ -68,8 +68,9 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
                 this.shouldShowTreeOrchard   = false;
                 
                 this.shouldShowAnimalFarm = !this.shouldShowAnimalFarm;
-            }
-        }
+            },
+        },
+
 
     }
 </script>
@@ -96,8 +97,12 @@ import GardenVegRoom    from '../garden_rooms/GardenVegRoom.vue'
      }
 
     @media (max-width: 980px) {
+
+        .interactive-garden {
+            flex-direction: column;
+        }
         .sidebar-wrapper {
-            display: none;
+            width: 100%;
         }
 
         .garden-rooms {

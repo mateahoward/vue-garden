@@ -33,12 +33,14 @@
             </ul>
         </section>
 
+        <section class="garden-jobs" v-if="canUseFarmTools">
+            <garden-jobs></garden-jobs>
+        </section>
+
 
         <!--- SIGNATURE -->
         <footer>
-           <p> Built with 💛 by </p>
-            <a href="https://github.com/mateahoward"> Matea Howard </a>
-            
+           <p> This project is still being worked on and some features may not be available just yet 👀 </p>       
         </footer>
   
     </div>
@@ -46,9 +48,18 @@
 
 
 <script>
+    import GardenJobs from '@/components/garden/GardenJobs.vue'
+    // PINIA
+    import { mapStores, mapActions } from 'pinia'
+    // PINIA - seed growth store
+    import { useFarmDetailsStore } from '@/stores/farmDetailsStore.js'
+    
+
     export default {
-  
         name: 'Sidebar',
+        components: {
+            GardenJobs
+        },
 
         data(){
             return {
@@ -57,20 +68,13 @@
                 canUseFarmTools: false,
                 shouldShowWelcome: true,
                 shouldShowWellDone: false,
-                showTreeOrchard: false,
-                showAnimalFarm: false,
-                
-                farm: [
-                    {
-                        name: this.farmName,
-                    }
-                ],
+                farm: [],
                
             }
         },
         emits: [
-            'shouldShowGardenSeeds', 
             'shouldShowTreeOrchard',
+            'shouldShowGardenVegRoom',
             'shouldShowAnimalFarm',
         ],
         methods: {
@@ -89,6 +93,12 @@
                   this.shouldShowWelcome = !this.shouldShowWelcome;
                   this.shouldShowWellDone = !this.shouldShowWellDone;
                 }
+
+                if(this.farmHasBeenNamed && !this.shouldShowWelcome){
+                    this.farmDetailsStore.addFarmName(this.farmName);  
+                }
+
+                this.farm = this.farmDetailsStore.farm;
             },
 
             toggleGardenTools() {
@@ -108,12 +118,17 @@
             toggleAnimalFarm() {
                 this.$emit('shouldShowAnimalFarm');
             },
+            // pinia - seed growth store -- methods
+            ...mapActions(useFarmDetailsStore, ['addFarmName']),
           
         },
         computed: {
             farmHasBeenNamed(){
                 return(this.farmName !== '')
             },  
+
+             // pinia -- seed growth store
+            ...mapStores(useFarmDetailsStore),
         }
     }
 </script>
@@ -225,6 +240,10 @@
         font-weight: bold;
     }
 
+    .garden-jobs {
+        margin-top: 30px;
+    }
+
     footer {
         position: absolute;
         bottom: 30px;
@@ -247,5 +266,21 @@
     footer a:hover, footer a:focus, footer a:visited {
         color: teal;
     }
+
+
+      @media (max-width: 980px) {
+         .sidebar {
+            /* position: absolute; */
+            width: 100%;
+            height: auto;
+         }
+
+         footer {
+            position: relative;
+            bottom: 0;
+            margin-bottom: 20px;
+         }
+
+      }
 
 </style>
