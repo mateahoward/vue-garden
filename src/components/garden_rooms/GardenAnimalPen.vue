@@ -23,11 +23,28 @@
 import Piggy from '../garden_animals/Piggy.vue'
 import GardenPlot from '../garden__plots/GardenPlot.vue'
 
+// PINIA
+import { mapStores, mapActions } from 'pinia'
+
+ // PINIA - farm jobs store
+import { useJobsStore } from '@/stores/farmJobsStore.js'
+
 export default {
     name: 'AnimalPen',
     components: {
         Piggy,
         GardenPlot,
+    },
+    created() {
+       this.jobsStore.markJobAsComplete('Say hello to Piggy');
+    },
+    methods: {
+         // pinia - jobs store -- methods
+        ...mapActions(useJobsStore, ['markJobAsComplete']),
+    },
+    computed: {
+        // pinia -- seed growth store
+        ...mapStores(useJobsStore),
     }
 }
 </script>

@@ -60,6 +60,9 @@ import { mapStores, mapActions } from 'pinia'
 // PINIA - seed growth store
 import { useSeedStore } from '@/stores/seedGrowthStore.js'
 
+ // PINIA - farm jobs store
+import { useJobsStore } from '@/stores/farmJobsStore.js'
+
 export default {
     name:'GardenVegRoom',
     
@@ -71,11 +74,13 @@ export default {
         return {
             shouldShowInstructions: true,
             seeds: [], 
+            jobs: [],
         }
     },
     mounted() {
         // get plant seeds from pinia
         this.seeds = this.seedGrowthStore.seeds;
+        this.jobs = this.jobsStore.jobs;
     },
 
     methods: {
@@ -94,6 +99,7 @@ export default {
             seed.list = list;
             
             this.incrementDefaultGrowthLevel(seed);
+            this.updateJobsStore();
         },
 
         incrementDefaultGrowthLevel(seed){
@@ -113,6 +119,18 @@ export default {
             return (seed.defaultGrowthLevel === 3)
         },
 
+         ///////////////////////////////////////////
+        ////////// UPDATE FARM JOBS ///////////////
+        ///////////////////////////////////////////
+        updateJobsStore() {
+            if(this.allSeedsArePlanted){
+                this.jobsStore.markJobAsComplete('Plant vegetables');
+            }
+        },
+
+        // pinia - jobs store -- methods
+        ...mapActions(useJobsStore, ['markJobAsComplete']),
+
          // pinia - seed growth store -- methods
          ...mapActions(useSeedStore, ['increment']),
     },
@@ -125,9 +143,15 @@ export default {
         plantedSeeds() {
             return this.seeds.filter(seed => seed.list === 2)
         },
+         allSeedsArePlanted() {           
+            return (this.plantedSeeds.length === this.seeds.length) 
+        },
 
          // pinia -- seed growth store
         ...mapStores(useSeedStore),
+
+        // pinia -- seed growth store
+        ...mapStores(useJobsStore),
     }
 }
 </script>
@@ -199,6 +223,8 @@ export default {
         display: flex;
         flex-direction: column;
         min-height: 500px;
+        position: relative;
+        bottom: -100px;
     }
 
      .garden-seeds {

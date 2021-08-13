@@ -13,15 +13,11 @@
         </div>
 
         <div class="harvest-ready noselect" v-if="isReadyForHarvest">
-            
 
-            <!-- TODO: find out why binding is not working from pinia store -->
-            <!-- <img v-bind:src="seed.img" :alt="seed.name"> -->
-
-            <img v-if="seed.name === 'Radish'"   src="../../assets/images/radish.gif"   :alt="seed.name">
-            <img v-if="seed.name === 'Corn'"     src="../../assets/images/corn.gif"     :alt="seed.name">
-            <img v-if="seed.name === 'Carrot'"   src="../../assets/images/carrot.gif"   :alt="seed.name">
-            <img v-if="seed.name === 'Pumpkin'"  src="../../assets/images/pumpkin.gif"  :alt="seed.name">
+            <img v-if="seed.name === 'Radish'"   src="../../assets/images/radish.gif"   :alt="seed.name" @click="harvestVegetable(seed)" :class="{'animate-harvest' : seed.harvested}">
+            <img v-if="seed.name === 'Corn'"     src="../../assets/images/corn.gif"     :alt="seed.name" @click="harvestVegetable(seed)" :class="{'animate-harvest' : seed.harvested}">
+            <img v-if="seed.name === 'Carrot'"   src="../../assets/images/carrot.gif"   :alt="seed.name" @click="harvestVegetable(seed)" :class="{'animate-harvest' : seed.harvested}">
+            <img v-if="seed.name === 'Pumpkin'"  src="../../assets/images/pumpkin.gif"  :alt="seed.name" @click="harvestVegetable(seed)" :class="{'animate-harvest' : seed.harvested}">
         
             <div class='drop-zone__plant-dirt'></div>
         </div>
@@ -52,10 +48,42 @@
 </template>
 
 <script>
+// PINIA
+import { mapActions,mapStores, mapState } from 'pinia'
+
+// PINIA - seed growth store
+import { useSeedStore } from '@/stores/seedGrowthStore.js'
+
+ // PINIA - farm jobs store
+import { useJobsStore } from '@/stores/farmJobsStore.js'
+
 export default {
     name: 'GardenPlot',
+    data(){
+        return {
+        }
+    },
     props: ['seed'],
+    created() {
 
+    },
+    methods: {
+        harvestVegetable(seed){
+            this.markAsHarvested(seed);
+            this.updateJobsStore();
+            
+        },
+        markAsHarvested(seed){
+            this.seedGrowthStore.markSeedAsHarvested(seed);  
+        },
+        updateJobsStore() {
+            this.jobsStore.markJobAsComplete('Harvest all produce');
+        },
+         // pinia - seed growth store -- methods
+         ...mapActions(useSeedStore, ['increment']),
+          // pinia - jobs store -- methods
+        ...mapActions(useJobsStore, ['markJobAsComplete']),
+    },
     computed: {
         notPlanted() {
             return (this.seed.defaultGrowthLevel === 1)
@@ -66,6 +94,12 @@ export default {
         isReadyForHarvest() {
             return (this.seed.defaultGrowthLevel === 3)
         },
+        // pinia -- seed growth store
+        ...mapStores(useSeedStore),
+         ...mapState(useSeedStore, ['seeds']),
+
+           // pinia -- seed growth store
+        ...mapStores(useJobsStore),
     }
 }
 </script>
@@ -218,5 +252,34 @@ export default {
         z-index: 5;
 
         cursor: pointer;
+    }
+
+    .harvest-ready img.animate-harvest {
+        animation-name: moveUp;
+        animation-duration: 4s;
+        animation-timing-function: ease-out;
+    }
+
+    @keyframes moveUp {
+        0% {
+            top: 130px;
+            height: 150px;
+            width: 150px;
+        }
+        25% {
+            top: -20px;
+            height: 50px;
+            width: 50px;
+        }
+        50% {
+            top: -30px;
+            height: 20px;
+            width: 20px;
+        }
+        100% {
+            top: -30px;
+            height: 0px;
+            width: 0px;
+        }
     }
 </style>

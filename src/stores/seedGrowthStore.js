@@ -12,7 +12,8 @@ export const useSeedStore = defineStore ({
                 name: 'Radish',
                 list: 1,
                 defaultGrowthLevel: 1,
-                img: '@/assets/images/radish.gif'
+                img: '@/assets/images/radish.gif',
+                harvested: false,
         
             },
             {
@@ -20,21 +21,24 @@ export const useSeedStore = defineStore ({
                 name: 'Corn',
                 list: 1,
                 defaultGrowthLevel: 1,
-                img: '@/assets/images/corn.gif'
+                img: '@/assets/images/corn.gif',
+                harvested: false,
             },
             {
                 id: 3,
                 name: 'Carrot',
                 list: 1,
                 defaultGrowthLevel: 1,
-                img: '@/assets/images/carrot.gif'
+                img: '@/assets/images/carrot.gif',
+                harvested: false,
             },
             {
                 id: 4,
                 name: 'Pumpkin',
                 list: 1,
                 defaultGrowthLevel: 1,
-                img: '../../assets/images/pumpkin.gif'
+                img: '../../assets/images/pumpkin.gif',
+                harvested: false,
             }
         ]
     }),
@@ -51,6 +55,21 @@ export const useSeedStore = defineStore ({
                 return seed.defaultGrowthLevel;
             });   
         },
+        markSeedAsHarvested(passedSeed) {
+            this.seeds.forEach(seed => {
+
+                if(passedSeed.defaultGrowthLevel > 2) {
+                    seed.harvested = true;
+
+                    setTimeout(() => {
+                        seed.defaultGrowthLevel++;
+                    }, 2000);
+                    
+                }
+                
+                return seed.harvested;
+            }); 
+        }
     }
 
 })

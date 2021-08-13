@@ -10,18 +10,20 @@
 
 <script>
 
-  // PINIA
+    // PINIA
     import { mapState } from 'pinia'
+
     // PINIA - farm jobs store
     import { useJobsStore } from '@/stores/farmJobsStore.js'
 
+
     export default {
         name: 'GardenJobs',
-
-        computed: {
+        
+        computed: {   
             // pinia -- seed growth store
             ...mapState(useJobsStore, ['jobs']),
-        }
+        },        
     }
 </script>
 

@@ -48,12 +48,9 @@
 
 
 <script>
-    import GardenJobs from '@/components/garden/GardenJobs.vue'
-    // PINIA
     import { mapStores, mapActions } from 'pinia'
-    // PINIA - seed growth store
     import { useFarmDetailsStore } from '@/stores/farmDetailsStore.js'
-    
+    import GardenJobs from '@/components/garden/GardenJobs.vue'
 
     export default {
         name: 'Sidebar',
@@ -77,6 +74,11 @@
             'shouldShowGardenVegRoom',
             'shouldShowAnimalFarm',
         ],
+        mounted() {
+            if(this.allSeedsArePlanted){
+                this.updateJobsStore();
+            }
+        },
         methods: {
             ///////////////////////////////////////////
             ////////// HELPERS ///////////////////////
@@ -118,16 +120,16 @@
             toggleAnimalFarm() {
                 this.$emit('shouldShowAnimalFarm');
             },
+           
             // pinia - seed growth store -- methods
             ...mapActions(useFarmDetailsStore, ['addFarmName']),
-          
         },
         computed: {
             farmHasBeenNamed(){
                 return(this.farmName !== '')
             },  
 
-             // pinia -- seed growth store
+             // pinia -- farm details store
             ...mapStores(useFarmDetailsStore),
         }
     }

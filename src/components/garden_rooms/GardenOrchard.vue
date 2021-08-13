@@ -8,8 +8,25 @@
 </template>
 
 <script>
+// PINIA
+import { mapStores, mapActions } from 'pinia'
+
+ // PINIA - farm jobs store
+import { useJobsStore } from '@/stores/farmJobsStore.js'
+
 export default {
-    name: "GardenOrchard"
+    name: "GardenOrchard",
+    created() {
+      this.jobsStore.markJobAsComplete('Visit tree orchid');
+    },
+    methods: {
+         // pinia - jobs store -- methods
+        ...mapActions(useJobsStore, ['markJobAsComplete']),
+    },
+    computed: {
+        // pinia -- seed growth store
+        ...mapStores(useJobsStore),
+    }
 }
 </script>
 

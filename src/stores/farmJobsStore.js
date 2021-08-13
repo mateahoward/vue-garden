@@ -8,34 +8,38 @@ export const useJobsStore = defineStore ({
 
         jobs: [
             {
-                description: 'Planted a vegetable',
-                isCompleted: true,
-            },
-            {
-                description: 'Watered all plants',
+                description: 'Plant vegetables',
                 isCompleted: false,
             },
             {
-                description: 'Harvested all produce',
+                description: 'Harvest all produce',
                 isCompleted: false,
             },
             {
-                description: 'Said hello to Piggy',
+                description: 'Say hello to Piggy',
                 isCompleted: false,
             },
             {
-                description: 'Visited tree orchid',
+                description: 'Visit tree orchid',
                 isCompleted: false,
             },
             {
-                description: 'Gave treats to Piggy',
+                description: 'Give treats to Piggy',
                 isCompleted: false,
             },
         ]
     }),
 
     actions: {
-
+        markJobAsComplete(passedJob) {
+            this.jobs.forEach(job => {
+                if(job.description === passedJob){
+                    return job.isCompleted = true;
+                } else {
+                    return job;
+                }
+            });
+        }
     }
 
 })
