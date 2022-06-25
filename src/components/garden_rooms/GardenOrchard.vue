@@ -1,8 +1,11 @@
 <template>
     <div class="garden-trees">
-        <div class="work-in-progress">
-            <p> Garden Orchard feature is currently being worked on.</p>
-            <p> Please return to Veg Garden or visit Animal Farm for now.</p>
+        <div class="pine-tree-row">
+            <pine-tree></pine-tree>
+        </div>
+
+        <div class="fruit-tree-row">
+            <fruit-tree></fruit-tree>
         </div>
     </div>
 </template>
@@ -13,9 +16,16 @@ import { mapStores, mapActions } from 'pinia'
 
  // PINIA - farm jobs store
 import { useJobsStore } from '@/stores/farmJobsStore.js'
+import PineTree from '../garden_trees/PineTree.vue'
+import FruitTree from '../garden_trees/FruitTree.vue'
 
 export default {
     name: "GardenOrchard",
+    components: {
+        PineTree,
+        FruitTree,
+
+    },
     created() {
       this.jobsStore.markJobAsComplete('Visit tree orchid');
     },
@@ -41,23 +51,18 @@ export default {
     align-content: center;
 }
 
-.work-in-progress {
-    background: white;
-    position: relative;
-    top: 40%;
-
+.pine-tree-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center; 
+    width: 100%;
+}
+.fruit-tree-row {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
-
-    text-align: center;
-
-
-    height: 200px;
-    width: 300px;
-
-    padding: 10px;
-    border-radius: 8px;
+    width: 100%;
 }
 </style>

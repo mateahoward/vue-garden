@@ -1,6 +1,6 @@
 <template>
     <div class="loading">
-        <div class="farm-information"></div>
+
     </div>
 </template>
 
@@ -12,6 +12,8 @@
     // PINIA - farm information store
     import { useSeedStore } from '@/stores/seedGrowthStore.js'
 
+
+
     export default {
         name: 'Loading',
         data() {
@@ -19,6 +21,7 @@
 
             }
         },
+
         computed: {
             // pinia -- seed growth store
             ...mapState(useSeedStore, ['seeds']),
@@ -34,5 +37,8 @@
         height: 100vh;
         width: 100%;
         background: white;
+
+        display: flex;
+        justify-content: center;
     }
 </style>
